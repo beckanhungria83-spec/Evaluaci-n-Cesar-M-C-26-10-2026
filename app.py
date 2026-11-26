@@ -12,10 +12,18 @@ db = client[os.getenv("DB_NAME")]
 aprendices = db[os.getenv("COLLECTION_NAME")]
 
 
+# 10.1. Consultar la cantidad de aprendices
 @app.route("/api/cantidadAprendices", methods=["GET"])
 def cantidad_aprendices():
     cantidad = aprendices.count_documents({})
     return jsonify({"CantidadAprendices": cantidad})
+
+
+# 10.2. Cantidad de aprendices por nivel de formación
+@app.route("/api/cantidadAprendices/<nivel>", methods=["GET"])
+def cantidad_aprendices_nivel(nivel):
+    cantidad = aprendices.count_documents({"NIVEL_DE_FORMACION": nivel})
+    return jsonify({"Nivel": nivel, "CantidadAprendices": cantidad})
 
 
 if __name__ == "__main__":
