@@ -96,5 +96,18 @@ def aprendices_por_programa(programa):
         "Aprendices": lista_aprendices
     })
 
+    # 10.8. Cantidad de aprendices certificados por programa de formación
+@app.route("/api/cantidadCertificados/<programa>", methods=["GET"])
+def cantidad_certificados(programa):
+    cantidad = aprendices.count_documents({
+        "PROGRAMA": programa,
+        "ESTADO_APRENDIZ": "Certificado"
+    })
+    return jsonify({
+        "Programa": programa,
+        "Estado": "Certificado",
+        "CantidadCertificados": cantidad
+    })
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
