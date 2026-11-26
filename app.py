@@ -34,7 +34,7 @@ def programas_por_nivel(nivel):
         "TotalProgramas": len(programas),
         "Programas": programas
     })
-    
+
 # 10.4. Listado de todos los programas de formación (sin duplicados)
 @app.route("/api/programas", methods=["GET"])
 def todos_los_programas():
@@ -43,6 +43,16 @@ def todos_los_programas():
         "TotalProgramas": len(programas),
         "Programas": programas
     })
+
+    # 10.5. Cantidad de aprendices por programa de formación
+@app.route("/api/cantidadAprendicesPrograma/<programa>", methods=["GET"])
+def cantidad_aprendices_programa(programa):
+    cantidad = aprendices.count_documents({"PROGRAMA": programa})
+    return jsonify({
+        "Programa": programa,
+        "CantidadAprendices": cantidad
+    })
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
