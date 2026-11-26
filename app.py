@@ -109,5 +109,30 @@ def cantidad_certificados(programa):
         "CantidadCertificados": cantidad
     })
 
+    # 10.9. Aprendices de una ficha según su estado de aprendiz
+@app.route("/api/porEstado/<ficha>/<estado>", methods=["GET"])
+def por_estado(ficha, estado):
+    ficha_valor = int(ficha) if ficha.isdigit() else ficha
+    consulta = {
+        "FICHA": ficha_valor,
+        "ESTADO_APRENDIZ": estado
+    }
+    proyeccion = {
+        "_id": 0,
+        "FICHA": 1,
+        "NUMERO_DOCUMENTO": 1,
+        "NOMBRE": 1,
+        "PRIMER_APELLIDO": 1,
+        "SEGUNDO_APELLIDO": 1,
+        "ESTADO_APRENDIZ": 1
+    }
+    lista_aprendices = list(aprendices.find(consulta, proyeccion))
+    return jsonify({
+        "Ficha": ficha_valor,
+        "Estado": estado,
+        "TotalAprendices": len(lista_aprendices),
+        "Aprendices": lista_aprendices
+    })
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
