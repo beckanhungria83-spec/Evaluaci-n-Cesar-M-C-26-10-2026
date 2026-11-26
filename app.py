@@ -24,7 +24,16 @@ def cantidad_aprendices():
 def cantidad_aprendices_nivel(nivel):
     cantidad = aprendices.count_documents({"NIVEL_DE_FORMACION": nivel})
     return jsonify({"Nivel": nivel, "CantidadAprendices": cantidad})
-
+    
+# 10.3. Listado de programas por nivel de formación (sin duplicados)
+@app.route("/api/programas/<nivel>", methods=["GET"])
+def programas_por_nivel(nivel):
+    programas = aprendices.distinct("PROGRAMA", {"NIVEL_DE_FORMACION": nivel})
+    return jsonify({
+        "Nivel": nivel,
+        "TotalProgramas": len(programas),
+        "Programas": programas
+    })
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
