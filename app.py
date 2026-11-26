@@ -134,5 +134,21 @@ def por_estado(ficha, estado):
         "Aprendices": lista_aprendices
     })
 
+    # 10.10. Programas de formación complementaria / virtual (sin duplicados)
+@app.route("/api/programasComplementariaVirtual", methods=["GET"])
+def programas_complementaria_virtual():
+    filtro = {
+        "PROGRAMA": {
+            "$regex": "COMPLEMENTAR|VIRTUAL",
+            "$options": "i"
+        }
+    }
+    programas = aprendices.distinct("PROGRAMA", filtro)
+    return jsonify({
+        "TotalProgramas": len(programas),
+        "Programas": programas
+    })
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
