@@ -53,6 +53,28 @@ def cantidad_aprendices_programa(programa):
         "CantidadAprendices": cantidad
     })
 
+  # 10.6. Aprendices de un programa con estado de ficha "Terminada por unificación"
+@app.route("/api/terminadaUnificacion/<programa>", methods=["GET"])
+def terminada_unificacion(programa):
+    estado = "Terminada por unificación"
+    consulta = {
+        "PROGRAMA": programa,
+        "ESTADO_FICHA": estado
+    }
+    proyeccion = {
+        "_id": 0,
+        "FICHA": 1,
+        "NUMERO_DOCUMENTO": 1,
+        "NOMBRE": 1,
+        "PRIMER_APELLIDO": 1,
+        "SEGUNDO_APELLIDO": 1
+    }
+    lista_aprendices = list(aprendices.find(consulta, proyeccion))
+    return jsonify({
+        "Programa": programa,
+        "Estado de la ficha": estado,
+        "Aprendices": lista_aprendices
+    })
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
