@@ -76,5 +76,25 @@ def terminada_unificacion(programa):
         "Aprendices": lista_aprendices
     })
 
+    # 10.7. Aprendices de un programa de formación específico
+@app.route("/api/aprendicesPrograma/<programa>", methods=["GET"])
+def aprendices_por_programa(programa):
+    consulta = {"PROGRAMA": programa}
+    proyeccion = {
+        "_id": 0,
+        "FICHA": 1,
+        "NUMERO_DOCUMENTO": 1,
+        "NOMBRE": 1,
+        "PRIMER_APELLIDO": 1,
+        "SEGUNDO_APELLIDO": 1,
+        "ESTADO_APRENDIZ": 1
+    }
+    lista_aprendices = list(aprendices.find(consulta, proyeccion))
+    return jsonify({
+        "Programa": programa,
+        "TotalAprendices": len(lista_aprendices),
+        "Aprendices": lista_aprendices
+    })
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
